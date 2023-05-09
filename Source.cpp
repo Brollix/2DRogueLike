@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
+#include "Background.h"
 #include "Player.h"
 
 
@@ -9,15 +10,23 @@ using namespace sf;
 
 int main()
 {
-	short width = 1280;
-	short height = 720;
+	float width = 1280;
+	float height = 720;
 
 	RenderWindow window(VideoMode(width, height), "SFML works!");
 	window.setVerticalSyncEnabled(true);
 
-	Player player;
+	Background background;
+	background.setScale(2.5);
+	background.setPosition(Vector2f(width / 2, height / 2));
 
-	Camera view(width, height);
+	Player player;
+	player.setScale(0.1, 0.1);
+	player.setPosition(Vector2f(width / 2, height / 2));
+
+	cout <<
+		"x: " << player.player.getTexture()->getSize().x <<
+		", y: " << player.player.getTexture()->getSize().y << endl;
 
 	while (window.isOpen()){
 		Event event;
@@ -26,43 +35,21 @@ int main()
 				case Event::Closed:
 					window.close();
 					break;
-
-				case Event::MouseWheelMoved:					
-					if (event.mouseWheel.delta > 0) {
-						view.zoom(0.9);
-					}
-					if (event.mouseWheel.delta < 0) {
-						view.zoom(1.1);
-					}	
 			}
-		}
-
-		bool moving = false;
-
-		if (Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::W)) {
-			moving = true;
-			view.move(0, -player.speed);
-		}
-		if (Keyboard::isKeyPressed(Keyboard::Down) || Keyboard::isKeyPressed(Keyboard::S)) {
-			moving = true;
-			view.move(0, player.speed);
-		}
-		if (Keyboard::isKeyPressed(Keyboard::Left) || Keyboard::isKeyPressed(Keyboard::A)) {
-			moving = true;
-			view.move(-player.speed, 0);
-		}
-		if (Keyboard::isKeyPressed(Keyboard::Right) || Keyboard::isKeyPressed(Keyboard::D)) {
-			moving = true;
-			view.move(player.speed, 0);
-		}
+		}		
 		
-		window.setView(view.camera);
+		window.setView(player.view.camera);
 		
 		window.clear();
 
+		background.render(window);
+
 		player.render(window);
 
+		
+
 		window.display();
+		player.move();
 	}
 	return 0;
 }

@@ -1,33 +1,98 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
 #include "Camera.h"
+
 using namespace sf;
+using namespace std;
 
-class Player
-{    
+class Player {    
 public:
-	
-	RectangleShape player;
-	float speed = 3;
 
-	Player() {		
-		player.setSize(Vector2f(20, 20));
+	Vector2f pos;
+	Camera view;
+	Texture texture;
+	Sprite player;
+	string path = "./img/player.png";
+	Vector2f speed;
+	float accel = 0.2;
+	float maxSpeed = 5;
+
+	float up = 0;
+	float down = 180;
+	float left = -90;
+	float right = 90;
+
+	Player() {
+		if (texture.loadFromFile(path))
+		{
+			player.setTexture(texture);
+
+			player.setOrigin(
+				Vector2f(
+					texture.getSize().x / 2,
+					texture.getSize().y / 2
+				));
+		}
 	};
 
-	void render(RenderWindow& window) {
-		window.draw(player);
-	}
+	
+	void move() {
+		float normSpeed = sqrt((speed.x * speed.x) + (speed.y * speed.y));
+		if (Keyboard::isKeyPressed(Keyboard::W)){
+			if (abs(speed.y) < /*normSpeed &&*/ maxSpeed)
+			{
+				speed.y -= accel;
+				cout << "shold move up" << endl;
+			}			
+			
+			player.setRotation(up);
+		}
+		if (Keyboard::isKeyPressed(Keyboard::S)){			
+			if (abs(speed.y) < normSpeed && maxSpeed)
+			{
+				speed.y += accel;
+				cout << "shold move down" << endl;
+			}			
 
-	void move(float x, float y) {
-		player.setPosition(x, y);
-	}
-	void move(Vector2f move) {
-		player.setPosition(move);
+			player.setRotation(down);
+		}
+		if (Keyboard::isKeyPressed(Keyboard::A)){
+			if (abs(speed.x) < normSpeed && maxSpeed)
+			{
+				speed.x -= accel;
+				cout << "shold move left" << endl;
+			}
+
+			player.setRotation(left);
+		}
+		if (Keyboard::isKeyPressed(Keyboard::D)){
+			if (abs(speed.x) < normSpeed && maxSpeed)
+			{
+				speed.x += accel;
+				cout << "shold move right" << endl;
+			}
+			player.setRotation(right);
+		}
+
+		view.setCenter(player.getPosition());
+		pos += speed;
+		player.setPosition(pos);
 	}
 
 	Vector2f getPosition() {
 		return player.getPosition();
+	}
+
+	void setPosition(Vector2f pos) {
+		player.setPosition(pos);
+	}
+
+	void setScale(float x, float y) {
+		player.setScale(x, y);
+	}
+
+	void render(RenderWindow& window) {
+		window.draw(player);
 	}
 };
 

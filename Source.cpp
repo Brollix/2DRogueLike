@@ -11,23 +11,11 @@ int main()
 {
 	short width = 1280;
 	short height = 720;
+
 	RenderWindow window(VideoMode(width, height), "SFML works!");
 	window.setVerticalSyncEnabled(true);
 
-	Sprite sprite;
-	Texture texture;
-
-	texture.loadFromFile("img/map.png");
-
-	sprite.setTexture(texture);
-
-	sprite.setOrigin(texture.getSize().x / 2, texture.getSize().y / 2);
-	sprite.setPosition(width / 2, height / 2);
-	sprite.scale(3, 3);
-
 	Player player;
-
-	int speed = 3;
 
 	Camera view(width, height);
 
@@ -53,27 +41,25 @@ int main()
 
 		if (Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::W)) {
 			moving = true;
-			view.move(player.getPosition().x, player.getPosition().y);
-			cout << "x: " << player.getPosition().x << ", y:" << player.getPosition().y << endl;
-		}/*
+			view.move(0, -player.speed);
+		}
 		if (Keyboard::isKeyPressed(Keyboard::Down) || Keyboard::isKeyPressed(Keyboard::S)) {
 			moving = true;
-			view.move(0, speed);
+			view.move(0, player.speed);
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Left) || Keyboard::isKeyPressed(Keyboard::A)) {
 			moving = true;
-			view.move(-speed, 0);
+			view.move(-player.speed, 0);
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Right) || Keyboard::isKeyPressed(Keyboard::D)) {
 			moving = true;
-			view.move(speed, 0);
+			view.move(player.speed, 0);
 		}
-		*/
+		
 		window.setView(view.camera);
 		
 		window.clear();
 
-		window.draw(sprite);
 		player.render(window);
 
 		window.display();

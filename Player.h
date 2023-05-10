@@ -14,9 +14,9 @@ public:
 	Sprite player;
 	string path = "./img/player.png";
 	Vector2f speed;
+	float drag = 0.1;
 	float accel = 0.2;
-	float maxSpeed = 5;
-
+	float maxSpeed = 3;
 	float up = 0;
 	float down = 180;
 	float left = -90;
@@ -39,7 +39,7 @@ public:
 	void move() {
 		float normSpeed = sqrt((speed.x * speed.x) + (speed.y * speed.y));
 		if (Keyboard::isKeyPressed(Keyboard::W)){
-			if (abs(speed.y) < /*normSpeed &&*/ maxSpeed)
+			if (abs(speed.y) < maxSpeed)
 			{
 				speed.y -= accel;
 				cout << "shold move up" << endl;
@@ -48,7 +48,7 @@ public:
 			player.setRotation(up);
 		}
 		if (Keyboard::isKeyPressed(Keyboard::S)){			
-			if (abs(speed.y) < normSpeed && maxSpeed)
+			if (abs(speed.y) < maxSpeed)
 			{
 				speed.y += accel;
 				cout << "shold move down" << endl;
@@ -57,7 +57,7 @@ public:
 			player.setRotation(down);
 		}
 		if (Keyboard::isKeyPressed(Keyboard::A)){
-			if (abs(speed.x) < normSpeed && maxSpeed)
+			if (abs(speed.x) < maxSpeed)
 			{
 				speed.x -= accel;
 				cout << "shold move left" << endl;
@@ -66,12 +66,28 @@ public:
 			player.setRotation(left);
 		}
 		if (Keyboard::isKeyPressed(Keyboard::D)){
-			if (abs(speed.x) < normSpeed && maxSpeed)
+			if (abs(speed.x) < maxSpeed)
 			{
 				speed.x += accel;
 				cout << "shold move right" << endl;
 			}
 			player.setRotation(right);
+		}
+		if (speed.x > 0)
+		{
+			speed.x -= drag;
+		}
+		if (speed.x < 0)
+		{
+			speed.x += drag;
+		}
+		if (speed.y > 0)
+		{
+			speed.y -= drag;
+		}
+		if (speed.y < 0)
+		{
+			speed.y += drag;
 		}
 
 		view.setCenter(player.getPosition());

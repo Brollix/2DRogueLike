@@ -34,15 +34,15 @@ public:
 				));
 		}
 	};
-
 	
+
 	void move() {
 		float normSpeed = sqrt((speed.x * speed.x) + (speed.y * speed.y));
 		if (Keyboard::isKeyPressed(Keyboard::W)){
 			if (abs(speed.y) < maxSpeed)
 			{
 				speed.y -= accel;
-				cout << "shold move up" << endl;
+				//cout << "shold move up" << endl;
 			}			
 			
 			player.setRotation(up);
@@ -51,7 +51,7 @@ public:
 			if (abs(speed.y) < maxSpeed)
 			{
 				speed.y += accel;
-				cout << "shold move down" << endl;
+				//cout << "shold move down" << endl;
 			}			
 
 			player.setRotation(down);
@@ -60,7 +60,7 @@ public:
 			if (abs(speed.x) < maxSpeed)
 			{
 				speed.x -= accel;
-				cout << "shold move left" << endl;
+				//cout << "shold move left" << endl;
 			}
 
 			player.setRotation(left);
@@ -69,7 +69,7 @@ public:
 			if (abs(speed.x) < maxSpeed)
 			{
 				speed.x += accel;
-				cout << "shold move right" << endl;
+				//cout << "shold move right" << endl;
 			}
 			player.setRotation(right);
 		}
@@ -110,5 +110,8 @@ public:
 	void render(RenderWindow& window) {
 		window.draw(player);
 	}
+
+	//shootTime = shootingClock.getElapsedTime().asSeconds();
+
 };
 

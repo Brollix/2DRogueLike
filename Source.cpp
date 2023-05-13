@@ -69,7 +69,7 @@ int main()
 		spawnTime = spawnClock.getElapsedTime().asSeconds();
 		if (spawnTime >= spawnCooldown) {
 			Enemy enemy;
-			enemy.setPosition(player.getPosition());
+			enemy.setPosition(Vector2f (rand()% (int)width, rand() % (int)height));
 			enemies.push_back(enemy);
 			spawnClock.restart();
 			cout << "enemy spawn" << endl;
@@ -78,7 +78,9 @@ int main()
 		for (size_t i = 0; i < enemies.size(); i++)
 		{
 			enemies[i].render(window);
+			enemies[i].moveToPlayer(player.getPosition());
 		}
+
 		window.display();
 		player.move();
 	}

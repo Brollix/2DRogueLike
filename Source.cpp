@@ -1,5 +1,9 @@
-#include <SFML/Graphics.hpp>
 #include <iostream>
+
+#include <stdlib.h>
+#include <time.h> 
+
+#include <SFML/Graphics.hpp>
 
 #include "Background.h"
 #include "Player.h"
@@ -9,8 +13,16 @@
 using namespace std;
 using namespace sf;
 
-int main()
+const float pi = 3.14159265359;
+
+int random(int a, int b)
 {
+	srand(time(NULL));
+	return rand() % b + a;
+}
+
+int main() { 
+
 	float width = 1280;
 	float height = 720;
 
@@ -18,7 +30,7 @@ int main()
 	window.setVerticalSyncEnabled(true);
 
 	Background background;
-	background.setScale(2.5);
+	background.setScale(2);
 	background.setPosition(Vector2f(width / 2, height / 2));
 
 	Enemy enemy; 
@@ -27,13 +39,8 @@ int main()
 	player.setScale(0.1, 0.1);
 	player.setPosition(Vector2f(width / 2, height / 2));
 
-	//cout <<
-	//	"x: " << player.player.getTexture()->getSize().x <<
-	//	", y: " << player.player.getTexture()->getSize().y << endl;
-
 	vector <Enemy>enemies;
 	enemies.push_back(enemy);
-	cout << enemies.size()<<endl;
 
 	Clock clock;
 	Clock fpsClock;
@@ -42,7 +49,24 @@ int main()
 	float spawnTime = 0;
 	float spawnCooldown = 1;
 
+	float radius = (width / 2) + 100;
+	vector<CircleShape> balls;
+	
+	for (int i = 0; i < (2 * pi)*10; i++)
+	{
+		CircleShape ball;
+		int x = radius * cos(i);
+		int y = radius * sin(i);
+
+		ball.setPosition(x + width / 2, y + height / 2);
+		ball.setRadius(2);
+		balls.push_back(ball);
+	}
+
 	while (window.isOpen()){
+
+		cout << (int)sqrt( pow(player.dir.x, 2) + pow(player.dir.y, 2)) << endl;
+
 		Event event;
 		while (window.pollEvent(event)){			
 			switch (event.type){
@@ -59,7 +83,7 @@ int main()
 		background.render(window);
 
 		player.render(window);
-
+		
 		float time = clock.getElapsedTime().asSeconds();
 		float random = 25 + (rand() % (int)width - 25);
 		float currentTime = fpsClock.restart().asSeconds();
@@ -69,17 +93,22 @@ int main()
 		spawnTime = spawnClock.getElapsedTime().asSeconds();
 		if (spawnTime >= spawnCooldown) {
 			Enemy enemy;
-			enemy.setPosition(Vector2f (rand()% (int)width, rand() % (int)height));
+			enemy.setPos(Vector2f (rand()% (int)width/2, rand() % (int)height/2));
 			enemies.push_back(enemy);
 			spawnClock.restart();
-			cout << "enemy spawn" << endl;
-
 		}
+		
 		for (size_t i = 0; i < enemies.size(); i++)
 		{
 			enemies[i].render(window);
 			enemies[i].moveToPlayer(player.getPosition());
 		}
+		
+		for (int i = 0; i < balls.size(); i++)
+		{
+			window.draw(balls[i]);
+		}
+		
 
 		window.display();
 		player.move();

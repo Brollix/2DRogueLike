@@ -1,6 +1,5 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "ctime"		
 #include "Entity.h"	
 #include "Player.h"
 
@@ -10,49 +9,61 @@ using namespace sf;
 class Enemy
 {
 public:
-	RectangleShape enemy;
-	float enemyspawntimer;
-	float enemyspawntimermax;
-	int enemyspawnmax;
-	int enemyspawnnumber;
 	Vector2f pos;
 	Vector2f dir;
+
+	Texture* texture = new Texture;
+	Sprite* enemy = new Sprite;
+	
+	string path = "./img/enemies/Enemy_1.png";
+
 	float speed = 2;
-	float hyp;
 
 	Enemy()
 	{
-		this->enemy.setSize(Vector2f(40.f, 50.f));
-		this->enemy.setFillColor(Color::Red);
-		this->enemy.setOutlineColor(Color::Red);
-		this->enemy.setOutlineThickness(1.f);
-	}
-	int random()
-	{
+		if (texture->loadFromFile(path))
+		{			
+			enemy->setTexture(*texture);
 
-		srand(static_cast<unsigned>(time(NULL)));
+			enemy->setOrigin(
+				Vector2f(
+					texture->getSize().x / 2,
+					texture->getSize().y / 2
+				));
+
+			enemy->setScale(0.1, 0.1);
+		}
 	}
+	
 	void render(RenderWindow& window)
 	{
-		window.draw(enemy);
+		window.draw(*enemy);
 	}
-	void setPosition(Vector2f pos)
+
+	Vector2f getPos() {
+		return enemy->getPosition();
+	}
+
+	void setPos(Vector2f pos)
 	{
-		enemy.setPosition(pos);
+		enemy->setPosition(pos);
 	}
+
 	void moveToPlayer(Vector2f playerpos)
 	{
-		dir.x = playerpos.x - enemy.getPosition().x;
-		dir.y = playerpos.y - enemy.getPosition().y;
+		float hyp;
 
-		hyp = sqrt(dir.x * dir.x + dir.y * dir.y);
+		dir.x = playerpos.x - enemy->getPosition().x;
+		dir.y = playerpos.y - enemy->getPosition().y;
+
+		hyp = sqrt( (dir.x * dir.x) + (dir.y * dir.y) );
 		dir.x /= hyp;
 		dir.y /= hyp;
-		pos = enemy.getPosition();
+		pos = enemy->getPosition();
 		pos.x += dir.x * speed;
 		pos.y += dir.y * speed;
 
-		enemy.setPosition(pos);
+		enemy->setPosition(pos);
 	}
 };
 

@@ -7,13 +7,12 @@ using namespace std;
 
 class Player {    
 public:
-
-	Vector2f pos;
+	
 	Camera view;
 	Texture texture;
 	Sprite player;
 	string path = "./img/player.png";
-	Vector2f speed;
+	
 	float drag = 0.1;
 	float accel = 0.2;
 	float maxSpeed = 3;
@@ -21,6 +20,10 @@ public:
 	float down = 180;
 	float left = -90;
 	float right = 90;
+
+	Vector2f pos;
+	Vector2f dir;
+	float speed;
 
 	Player() {
 		if (texture.loadFromFile(path))
@@ -37,62 +40,61 @@ public:
 	
 
 	void move() {
-		float normSpeed = sqrt((speed.x * speed.x) + (speed.y * speed.y));
+
+		view.setCenter(player.getPosition());
+
 		if (Keyboard::isKeyPressed(Keyboard::W)){
-			if (abs(speed.y) < maxSpeed)
+			if (abs(dir.y) < maxSpeed)
 			{
-				speed.y -= accel;
-				//cout << "shold move up" << endl;
+				dir.y -= accel;
 			}			
 			
 			player.setRotation(up);
 		}
 		if (Keyboard::isKeyPressed(Keyboard::S)){			
-			if (abs(speed.y) < maxSpeed)
+			if (abs(dir.y) < maxSpeed)
 			{
-				speed.y += accel;
-				//cout << "shold move down" << endl;
+				dir.y += accel;
 			}			
 
 			player.setRotation(down);
 		}
 		if (Keyboard::isKeyPressed(Keyboard::A)){
-			if (abs(speed.x) < maxSpeed)
+			if (abs(dir.x) < maxSpeed)
 			{
-				speed.x -= accel;
-				//cout << "shold move left" << endl;
+				dir.x -= accel;
 			}
 
 			player.setRotation(left);
 		}
 		if (Keyboard::isKeyPressed(Keyboard::D)){
-			if (abs(speed.x) < maxSpeed)
+			if (abs(dir.x) < maxSpeed)
 			{
-				speed.x += accel;
-				//cout << "shold move right" << endl;
+				dir.x += accel;
 			}
 			player.setRotation(right);
 		}
-		if (speed.x > 0)
+		if (dir.x > 0)
 		{
-			speed.x -= drag;
+			dir.x -= drag;
 		}
-		if (speed.x < 0)
+		if (dir.x < 0)
 		{
-			speed.x += drag;
+			dir.x += drag;
 		}
-		if (speed.y > 0)
+		if (dir.y > 0)
 		{
-			speed.y -= drag;
+			dir.y -= drag;
 		}
-		if (speed.y < 0)
+		if (dir.y < 0)
 		{
-			speed.y += drag;
+			dir.y += drag;
 		}
 
-		view.setCenter(player.getPosition());
-		pos += speed;
+		pos += dir;
+
 		player.setPosition(pos);
+
 	}
 
 	Vector2f getPosition() {
@@ -110,8 +112,6 @@ public:
 	void render(RenderWindow& window) {
 		window.draw(player);
 	}
-
-	//shootTime = shootingClock.getElapsedTime().asSeconds();
 
 };
 

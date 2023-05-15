@@ -47,21 +47,6 @@ int main() {
 	Clock shootingClock;
 	Clock spawnClock;
 	float spawnTime = 0;
-	float spawnCooldown = 1;
-
-	float radius = (width / 2) + 100;
-	vector<CircleShape> balls;
-	
-	for (int i = 0; i < (2 * pi)*10; i++)
-	{
-		CircleShape ball;
-		int x = radius * cos(i);
-		int y = radius * sin(i);
-
-		ball.setPosition(x + width / 2, y + height / 2);
-		ball.setRadius(2);
-		balls.push_back(ball);
-	}
 
 	while (window.isOpen()){
 

@@ -47,6 +47,7 @@ int main() {
 	Clock shootingClock;
 	Clock spawnClock;
 	float spawnTime = 0;
+	float spawnCooldown = 1;
 
 	while (window.isOpen()){
 
@@ -89,12 +90,6 @@ int main() {
 			enemies[i].moveToPlayer(player.getPosition());
 		}
 		
-		for (int i = 0; i < balls.size(); i++)
-		{
-			window.draw(balls[i]);
-		}
-		
-
 		window.display();
 		player.move();
 	}

@@ -99,6 +99,8 @@ int main() {
 		{
 			enemies[i].render(window);
 			enemies[i].moveToPlayer(player.getPosition());
+		}
+		
 		}		
 
 		window.display();

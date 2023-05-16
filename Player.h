@@ -12,18 +12,19 @@ public:
 	Texture texture;
 	Sprite player;
 	string path = "./img/player.png";
+
+	Vector2f pos;
+	Vector2f dir;
+	Vector2f normDir;
 	
 	float drag = 0.1;
-	float accel = 0.2;
-	float maxSpeed = 3;
+	float accel = 0.1;
+	float maxSpeed = 2;
+
 	float up = 0;
 	float down = 180;
 	float left = -90;
 	float right = 90;
-
-	Vector2f pos;
-	Vector2f dir;
-	float speed;
 
 	Player() {
 		if (texture.loadFromFile(path))
@@ -36,8 +37,7 @@ public:
 					texture.getSize().y / 2
 				));
 		}
-	};
-	
+	};	
 
 	void move() {
 
@@ -74,6 +74,7 @@ public:
 			}
 			player.setRotation(right);
 		}
+
 		if (dir.x > 0)
 		{
 			dir.x -= drag;
@@ -90,11 +91,19 @@ public:
 		{
 			dir.y += drag;
 		}
+		
+		double hyp = sqrt(dir.x * dir.x + dir.y * dir.y);
+
+		//cout << "x: " << dir.x / hyp << ", y: " << dir.y / hyp << endl;
+		
+		//normDir.x = dir.x / hyp;
+		//normDir.y = dir.y / hyp;
+
+		//pos += normDir;
 
 		pos += dir;
 
 		player.setPosition(pos);
-
 	}
 
 	Vector2f getPosition() {

@@ -15,13 +15,13 @@ using namespace sf;
 
 const float pi = 3.14159265359;
 
-int random(int a, int b)
+int randInt(int a, int b)
 {
-	srand(time(NULL));
 	return rand() % b + a;
 }
 
 int main() { 
+	srand(time(NULL));
 
 	float width = 1280;
 	float height = 720;
@@ -47,10 +47,21 @@ int main() {
 	Clock shootingClock;
 	Clock spawnClock;
 	float spawnTime = 0;
+	float spawnCooldown = 1;
+
+	float top = background.background.getGlobalBounds().top;
+	float down = background.background.getGlobalBounds().height;
+	float left = background.background.getGlobalBounds().left;
+	float right = background.background.getGlobalBounds().width;
+
+	cout << 
+		"x1: " << left <<
+		", x2: " << right <<
+		", y1: " << top << 
+		", y1: " << down << 
+		endl;
 
 	while (window.isOpen()){
-
-		cout << (int)sqrt( pow(player.dir.x, 2) + pow(player.dir.y, 2)) << endl;
 
 		Event event;
 		while (window.pollEvent(event)){			
@@ -63,6 +74,7 @@ int main() {
 		
 		window.setView(player.view.camera);
 		
+		player.move();
 		window.clear();
 
 		background.render(window);
@@ -78,7 +90,7 @@ int main() {
 		spawnTime = spawnClock.getElapsedTime().asSeconds();
 		if (spawnTime >= spawnCooldown) {
 			Enemy enemy;
-			enemy.setPos(Vector2f (rand()% (int)width/2, rand() % (int)height/2));
+			enemy.setPos(Vector2f (randInt(left, right), randInt(top, down)));
 			enemies.push_back(enemy);
 			spawnClock.restart();
 		}
@@ -87,16 +99,9 @@ int main() {
 		{
 			enemies[i].render(window);
 			enemies[i].moveToPlayer(player.getPosition());
-		}
-		
-		for (int i = 0; i < balls.size(); i++)
-		{
-			window.draw(balls[i]);
-		}
-		
+		}		
 
 		window.display();
-		player.move();
 	}
 	return 0;
 }

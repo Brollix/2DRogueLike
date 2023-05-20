@@ -13,5 +13,5 @@ public:
 	unsigned long maxHealth = 100;
 	unsigned long currentHealth = 100;
 	unsigned long damage = 1;
-
+	
 };

@@ -21,6 +21,8 @@ public:
 	string path = "./img/enemies/Enemy_1.png";
 
 	float speed = 2;
+	int Enemywidth = texture->getSize().x / 2;
+	int Enemyheight = texture->getSize().y / 2;
 
 	Enemy(){
 		if (texture->loadFromFile(path)){			
@@ -70,6 +72,9 @@ public:
 		pos.y += dir.y * speed;
 
 		enemy->setPosition(pos);
+	}
+	Vector2u getSize() {
+		return texture->getSize();
 	}
 };
 

@@ -25,6 +25,8 @@ public:
 	float down = 180;
 	float left = -90;
 	float right = 90;
+	int width = texture.getSize().x / 2;
+	int height = texture.getSize().y / 2;
 
 	Player() {
 		if (texture.loadFromFile(path))

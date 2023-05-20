@@ -39,7 +39,7 @@ int main() {
 	player.setScale(0.1, 0.1);
 	player.setPosition(Vector2f(width / 2, height / 2));
 
-	vector <Enemy>enemies;
+	vector<Enemy>enemies;
 	enemies.push_back(enemy);
 
 	Clock clock;
@@ -53,13 +53,6 @@ int main() {
 	float down = background.background.getGlobalBounds().height;
 	float left = background.background.getGlobalBounds().left;
 	float right = background.background.getGlobalBounds().width;
-
-	cout << 
-		"x1: " << left <<
-		", x2: " << right <<
-		", y1: " << top << 
-		", y1: " << down << 
-		endl;
 
 	while (window.isOpen()){
 
@@ -75,6 +68,7 @@ int main() {
 		window.setView(player.view.camera);
 		
 		player.move();
+		player.shoot(enemies);
 		window.clear();
 
 		background.render(window);
@@ -93,14 +87,13 @@ int main() {
 			enemy.setPos(Vector2f (randInt(left, right), randInt(top, down)));
 			enemies.push_back(enemy);
 			spawnClock.restart();
+
+			
 		}
 		
-		for (size_t i = 0; i < enemies.size(); i++)
-		{
+		for (size_t i = 0; i < enemies.size(); i++){
 			enemies[i].render(window);
 			enemies[i].moveToPlayer(player.getPosition());
-		}
-		
 		}		
 
 		window.display();

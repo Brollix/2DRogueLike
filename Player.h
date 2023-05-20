@@ -122,5 +122,24 @@ public:
 		window.draw(player);
 	}
 
+	template <class T>
+	void shoot(vector <T> enemies) {
+		Vector2f enemyPos;
+		Vector2f distanceVector;
+
+		float distance;
+		for (int i = 0; i < enemies.size(); i++)
+		{
+			enemyPos = enemies[i].getPos();
+			distanceVector = enemyPos - this->pos;
+			distance = sqrt(distanceVector.x * distanceVector.x + distanceVector.y * distanceVector.y);
+
+			if (distance < 25)
+			{
+				//shoot
+			}
+		}
+	}
+
 };
 

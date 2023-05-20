@@ -12,6 +12,9 @@ public:
 	Vector2f pos;
 	Vector2f dir;
 
+	FloatRect* bounds = new FloatRect;
+	RectangleShape* bound = new RectangleShape;
+
 	Texture* texture = new Texture;
 	Sprite* enemy = new Sprite;
 	
@@ -19,10 +22,8 @@ public:
 
 	float speed = 2;
 
-	Enemy()
-	{
-		if (texture->loadFromFile(path))
-		{			
+	Enemy(){
+		if (texture->loadFromFile(path)){			
 			enemy->setTexture(*texture);
 
 			enemy->setOrigin(
@@ -47,6 +48,11 @@ public:
 	void setPos(Vector2f pos)
 	{
 		enemy->setPosition(pos);
+		bound->setPosition(pos);
+	}
+
+	FloatRect getBounds() {
+		return enemy->getLocalBounds();
 	}
 
 	void moveToPlayer(Vector2f playerpos)
